@@ -8,7 +8,7 @@ for i in range(n):
 
   if a == b and b == c:
     money = 10000 + (a * 1000)
-  elif a == b or a == c:
+  elif a == b:
     money = 1000 + (a * 100)
   elif b == c:
     money = 1000 + (b * 100)
