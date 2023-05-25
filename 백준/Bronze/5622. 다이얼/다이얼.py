@@ -1,11 +1,12 @@
-alpabet_list = ['ABC', 'DEF', 'GHI', 'JKL', 'MNO', 'PQRS', 'TUV', 'WXYZ']
-word = input()
+alphabet = ["ABC", "DEF", "GHI", "JKL", "MNO", "PQRS", "TUV", "WXYZ"]
 
-count = 0
+input_data = input()
 
-for i in alpabet_list:
-  for j in word:
-    if j in i:
-      count += alpabet_list.index(i) + 3
+result = 0
 
-print(count)
+for i in input_data:
+  for j in alphabet:
+    if i in j:
+      result += alphabet.index(j) + 3
+
+print(result)
