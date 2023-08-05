@@ -10,22 +10,19 @@ dy = [0, 0, -1, 1, -1, 1, -1, 1]
 
 
 def dfs(x, y):
-
-  if x < 0 or x >= m or y < 0 or y >= n:
-    return False
+  # 해당 노드의 방문처리를 해줘야 함
   if graph[x][y] == 0:
     return False
-
-  if graph[x][y] == 1:
-    graph[x][y] = 0
-    dfs(x - 1, y)
-    dfs(x + 1, y)
-    dfs(x, y - 1)
-    dfs(x, y + 1)
-    dfs(x - 1, y - 1)
-    dfs(x - 1, y + 1)
-    dfs(x + 1, y - 1)
-    dfs(x + 1, y + 1)
+  graph[x][y] = 0
+  for i in range(8):
+    nx = x + dx[i]
+    ny = y + dy[i]
+    if nx < 0 or nx >= m or ny < 0 or ny >= n:
+      continue
+    if graph[nx][ny] == 0:
+      continue
+    if graph[nx][ny] == 1:
+      dfs(nx, ny)
   return True
 
 
