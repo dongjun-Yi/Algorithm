@@ -1,22 +1,22 @@
 n, k = map(int, input().split())
-
 country = []
+
 for _ in range(n):
-  con, gold, silver, bronze = map(int, input().split())
-  country.append((con, gold * 3, silver * 2, bronze * 1))
+  a = list(map(int, input().split()))
+  if a[0] == k:
+    standard = a
+  else:
+    country.append(a)
 
-res = [0] * (n + 1)
-
-for i in range(n):
-  sum = country[i][1] + country[i][2] + country[i][3]
-  res[country[i][0]] = sum
-
-tmp = [0] * (n + 1)
-for i in range(1, n + 1):
-  rank = 1
-  for j in range(1, n + 1):
-    if res[i] < res[j]:
+rank = 1
+for i in range(len(country)):
+  if country[i][1] > standard[1]:
+    rank += 1
+  elif country[i][1] == standard[1]:
+    if country[i][2] > standard[2]:
       rank += 1
-  tmp[i] = rank
+    elif country[i][2] == standard[2]:
+      if country[i][3] > standard[3]:
+        rank += 1
 
-print(tmp[k])
+print(rank)
