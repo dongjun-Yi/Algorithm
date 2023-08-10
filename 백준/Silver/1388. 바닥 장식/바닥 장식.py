@@ -1,6 +1,3 @@
-import sys
-
-sys.setrecursionlimit(1000000)
 n, m = map(int, input().split())
 
 graph = []
@@ -9,10 +6,6 @@ visited = [[False] * m for _ in range(n)]
 for _ in range(n):
   graph.append(list(input()))
 
-# 좌우
-dy = [-1, 1]
-# 상하
-dx = [-1, 1]
 cnt = 0
 
 
