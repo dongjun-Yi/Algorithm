@@ -1,13 +1,18 @@
 n = int(input())
-arr = list()
+
+people = []
 
 for _ in range(n):
-  x, y = map(int, input().split())
-  arr.append((x, y))
+  a, b = map(int, input().split())
+  people.append((a, b))
 
+res = []
 for i in range(n):
   rank = 1
   for j in range(n):
-    if arr[i][0] < arr[j][0] and arr[i][1] < arr[j][1]:
+    if people[i][0] < people[j][0] and people[i][1] < people[j][1]:
       rank += 1
-  print(rank, end=' ')
+  res.append(rank)
+
+for x in res:
+  print(x, end=' ')
