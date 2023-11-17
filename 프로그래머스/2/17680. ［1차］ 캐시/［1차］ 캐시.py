@@ -1,4 +1,3 @@
-from collections import deque
 import sys
 def solution(cacheSize, cities):
     answer = 0 
