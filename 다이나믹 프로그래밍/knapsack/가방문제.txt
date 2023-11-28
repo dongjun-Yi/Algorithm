@@ -1,0 +1,13 @@
+n, m = map(int, input().split())
+
+# 인덱스 : 보석을 담을 수 있는 무게
+# 배열 값 : 보석을 담는 최대 가치
+dy = [0] * (m + 1)
+
+for _ in range(n):
+  weight, value = map(int, input().split())
+
+  for i in range(weight, m + 1):
+    dy[i] = max(dy[i], dy[i - weight] + value)
+
+print(dy[m])
