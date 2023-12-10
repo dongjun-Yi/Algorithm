@@ -1,0 +1,6 @@
+SELECT coupons.cart_id, if(sum(cart_products.price) > coupons.minimum_requirement, 1, 0) as abused
+from cart_products, coupons 
+where cart_products.cart_id = coupons.cart_id
+group by coupons.cart_id 
+
+buy_info.append((i+1,req_id[i], req_info[i][1], req_info[i][2]))
