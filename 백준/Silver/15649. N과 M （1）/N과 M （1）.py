@@ -1,7 +1,8 @@
 n, m = map(int, input().split())
 
 res = [0] * m
-ch = [0] * (n + 1)
+
+visited = [False] * (n + 1)
 
 
 def dfs(L):
@@ -11,11 +12,11 @@ def dfs(L):
     print()
   else:
     for i in range(1, n + 1):
-      if ch[i] == 0:
-        ch[i] = 1
+      if not visited[i]:
         res[L] = i
+        visited[i] = True
         dfs(L + 1)
-        ch[i] = 0
+        visited[i] = False
 
 
 dfs(0)
