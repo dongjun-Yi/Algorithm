@@ -8,5 +8,5 @@ def solution(number, k):
         stack.append(n)
     
     if k > 0:
-        stack = number[:-1]
+        stack = stack[:-k]
     return ''.join(stack)
