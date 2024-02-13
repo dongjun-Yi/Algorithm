@@ -35,7 +35,6 @@ def solution(p):
         return u + solution(v)
     
     else:
-        print("a")
         answer = '('
         answer += solution(v)
         answer += ')'
