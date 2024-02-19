@@ -1,15 +1,19 @@
 n = int(input())
-arr = []
+
+g = []
+
 for _ in range(n):
-  arr.append(list(map(int, input().split())))
+  g.append(list(map(int, input().split())))
+
+dy = [[0] * n for _ in range(n)]
+dy[0][0] = g[0][0]
 
 for i in range(1, n):
-  for j in range(len(arr[i])):
+  for j in range(i+1):
     if j == 0:
-      arr[i][j] = arr[i - 1][j] + arr[i][j]
-    elif j == len(arr[i]) - 1:
-      arr[i][j] = arr[i - 1][j - 1] + arr[i][j]
-    else:
-      arr[i][j] = max(arr[i - 1][j - 1], arr[i - 1][j]) + arr[i][j]
+      dy[i][j] = dy[i-1][j] + g[i][j]
+    if j == i:
+      dy[i][j] = dy[i-1][j-1] + g[i][j]
+    dy[i][j] = max(dy[i-1][j-1], dy[i-1][j]) + g[i][j]
 
-print(max(arr[n - 1]))
+print(max(dy[n-1]))
