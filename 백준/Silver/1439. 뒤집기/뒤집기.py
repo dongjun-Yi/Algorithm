@@ -1,36 +1,16 @@
-s = input()
-one = 0
-zero = 0
+data = input()
+count0, count1 = 0, 0
 
-for i in range(len(s)):
-  tmp = int(s[i])
-  if tmp == 0:
-    if int(s[i - 1]) == 0 and i > 0:
-      continue
-    zero += 1
-
-for i in range(len(s)):
-  tmp = int(s[i])
-  if tmp == 1:
-    if int(s[i - 1]) == 1 and i > 0:
-      continue
-    one += 1
-cnt = 0
-
-if one > zero:
-  for i in range(len(s)):
-    tmp = int(s[i])
-    if tmp == 0:
-      if int(s[i - 1]) == 0 and i > 0:
-        continue
-      cnt += 1
-
+if data[0] == '1':
+  count0 += 1
 else:
-  for i in range(len(s)):
-    tmp = int(s[i])
-    if tmp == 1:
-      if int(s[i - 1]) == 1 and i > 0:
-        continue
-      cnt += 1
+  count1 += 1
 
-print(cnt)
+for i in range(len(data) - 1):
+  if data[i] != data[i + 1]:
+    if data[i + 1] == '1':
+      count0 += 1
+    else:
+      count1 += 1
+
+print(min(count0, count1))
