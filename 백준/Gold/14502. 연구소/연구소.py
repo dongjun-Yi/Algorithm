@@ -1,68 +1,62 @@
-from collections import deque
-import sys
-
-input = sys.stdin.readline
-import copy
+from itertools import combinations
+import sys, copy
 
 n, m = map(int, input().split())
 
-graph = []
+g = [list(map(int, input().split())) for _ in range(n)]
 
-for _ in range(n):
-  graph.append(list(map(int, input().split())))
+blank = []
+
+for i in range(n):
+  for j in range(m):
+    if g[i][j] == 0:
+      blank.append((i, j))
 
 # 상하좌우
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
 
-# 바이러스 개수 세기
-def bfs():
-  global answer
-  q = deque()
-  tmp_graph = copy.deepcopy(graph)
+def dfs(x, y):
+  visited[x][y] = True
 
-  for i in range(n):
-    for j in range(m):
-      if tmp_graph[i][j] == 2:
-        q.append((i, j))
+  for i in range(4):
+    nx = x + dx[i]
+    ny = y + dy[i]
 
-  while q:
-    cur = q.popleft()
+    if nx < 0 or nx >= n or ny < 0 or ny >= m:
+      continue
 
-    for i in range(4):
-      nx = cur[0] + dx[i]
-      ny = cur[1] + dy[i]
+    if new_g[nx][ny] == 1:
+      continue
 
-      if nx < 0 or nx >= n or ny < 0 or ny >= m:
-        continue
+    if new_g[nx][ny] == 0 and not visited[nx][ny]:
+      new_g[nx][ny] = 2
+      dfs(nx, ny)
 
-      if tmp_graph[nx][ny] == 0:
-        tmp_graph[nx][ny] = 2
-        q.append((nx, ny))
 
+res = -sys.maxsize
+
+for c in list(combinations(blank, 3)):
   cnt = 0
-  for i in range(n):
-    cnt += tmp_graph[i].count(0)
+  t = []
+  visited = [[False] * m for _ in range(n)]
+  new_g = copy.deepcopy(g)
 
-  answer = max(answer, cnt)
-
-
-# 모든 경우의 수를 탐색하여 벽을 3개 세우기
-def makeWall(cnt):
-  if cnt == 3:
-    bfs()
-    return
+  for i in range(3):
+    cx, cy = c[i]
+    new_g[cx][cy] = 1
 
   for i in range(n):
     for j in range(m):
-      if graph[i][j] == 0:
-        graph[i][j] = 1
-        makeWall(cnt + 1)
-        graph[i][j] = 0
+      if new_g[i][j] == 2:
+        t.append((i, j))
+        dfs(i, j)
 
+  for i in range(n):
+    for j in range(m):
+      if new_g[i][j] == 0:
+        cnt += 1
 
-answer = 0
-
-makeWall(0)
-print(answer)
+  res = max(res, cnt)
+print(res)
