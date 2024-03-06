@@ -1,47 +1,46 @@
-def check_perfect(u):
+def check(s):
     stack = []
-    
-    for x in u:
-        if stack and x == ')':
-            if stack[-1] == ')':
+    for x in s:
+        if x == '(':
+            stack.append(x)
+        else:
+            if stack:
+                stack.pop()
+            else:
                 return False
-            stack.pop()
-            continue
-        stack.append(x)
-        
     if stack:
         return False
+    
     return True
 
-def make_uv(p):
-    left_par_count, right_par_count = 0,0
-    for i in range(len(p)):
-        if p[i] == '(':
-            left_par_count +=1
-        else:
-            right_par_count +=1
-        if left_par_count == right_par_count:
-            return p[:i+1], p[i+1:]
-        
 def solution(p):
     answer = ''
     
-    if len(p) == 0:
-        return ""
+    if p == '':
+        return p
     
-    u, v = make_uv(p)
+    left_cnt, right_cnt = 0, 0
+    for x in p:
+        if x == '(':
+            left_cnt += 1
+        else:
+            right_cnt += 1
     
-    if check_perfect(u):
+        if left_cnt == right_cnt: # 균형잡힌 문자열
+            u = p[:left_cnt + right_cnt]
+            v = p[left_cnt + right_cnt:]
+            break
+            
+    if check(u):
         return u + solution(v)
     
-    else:
-        answer = '('
-        answer += solution(v)
-        answer += ')'
-        
-        for x in u[1:len(u)- 1]:
-            if x == '(':
-                answer += ')'
-            else:
-                answer += '('
-        return answer
+    
+    answer = "(" + solution(v) + ")"
+    u = u[1:-1]
+    
+    for i in range(len(u)):
+        if u[i] == '(':
+            answer += ')'
+        else:
+            answer += '('
+    return answer
