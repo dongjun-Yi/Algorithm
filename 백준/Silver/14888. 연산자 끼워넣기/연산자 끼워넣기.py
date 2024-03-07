@@ -1,27 +1,40 @@
+import sys
+
 n = int(input())
-a = list(map(int, input().split()))
+data = list(map(int, input().split()))
+
 add, sub, mul, div = map(int, input().split())
 
-max_result = -int(1e9)
-min_result = int(1e9)
+min_value = sys.maxsize
+max_value = -sys.maxsize
 
 
-def dfs(add, sub, mul, div, sum, idx):
-  global max_result, min_result
-  if idx == n:
-    max_result = max(max_result, sum)
-    min_result = min(min_result, sum)
-    return
-  if add:
-    dfs(add - 1, sub, mul, div, sum + a[idx], idx + 1)
-  if sub:
-    dfs(add, sub - 1, mul, div, sum - a[idx], idx + 1)
-  if mul:
-    dfs(add, sub, mul - 1, div, sum * a[idx], idx + 1)
-  if div:
-    dfs(add, sub, mul, div - 1, int(sum / a[idx]), idx + 1)
+def dfs(L, now):
+  global max_value, min_value, add, sub, mul, div
+
+  if L == n:  # 종료 조건
+    min_value = min(min_value, now)
+    max_value = max(max_value, now)
+
+  else:
+    if add > 0:
+      add -= 1
+      dfs(L + 1, now + data[L])
+      add += 1
+    if sub > 0:
+      sub -= 1
+      dfs(L + 1, now - data[L])
+      sub += 1
+    if mul > 0:
+      mul -= 1
+      dfs(L + 1, now * data[L])
+      mul += 1
+    if div > 0:
+      div -= 1
+      dfs(L + 1, int(now / data[L]))
+      div += 1
 
 
-dfs(add, sub, mul, div, a[0], 1)
-print(max_result)
-print(min_result)
+dfs(1, data[0])
+print(max_value)
+print(min_value)
