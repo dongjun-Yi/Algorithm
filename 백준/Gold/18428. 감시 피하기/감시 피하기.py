@@ -1,57 +1,71 @@
-n = int(input())
+from itertools import combinations
+import sys
 
-graph = []
+n = int(input())
+g = []
 teacher = []
+blank = []
 
 for i in range(n):
-  graph.append(list(input().split()))
+  g.append(list(input().split()))
   for j in range(n):
-    if graph[i][j] == 'T':
+    if g[i][j] == 'T':
       teacher.append((i, j))
+    if g[i][j] == 'X':
+      blank.append((i, j))
 
-# 상하좌우
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
-
-flag = False
+cnt = 3
 
 
-def bfs():
-  for t in teacher:
-    for i in range(4):
-      nx, ny = t
-      while True:
-        if nx < 0 or nx >= n or ny < 0 or ny >= n:
-          break
-        if graph[nx][ny] == 'O':
-          break
-        # 학생이 보이면 실패
-        if graph[nx][ny] == 'S':
-          return False
-        nx += dx[i]
-        ny += dy[i]
+def check():
+  for x, y in teacher:  #동서남북 확인
+    # 서쪽
+    ny = y
+    while ny >= 0:
+      if g[x][ny] == 'S':
+        return False
+      if g[x][ny] == 'O':
+        break
+      ny -= 1
+    # 동쪽
+    ny = y
+    while ny < n:
+      if g[x][ny] == 'S':
+        return False
+      if g[x][ny] == 'O':
+        break
+      ny += 1
+    nx = x
+    # 북쪽
+    while nx >= 0:
+      if g[nx][y] == 'S':
+        return False
+      if g[nx][y] == 'O':
+        break
+      nx -= 1
+    nx = x
+    # 남쪽
+    while nx < n:
+      if g[nx][y] == 'S':
+        return False
+      if g[nx][y] == 'O':
+        break
+      nx += 1
+
   return True
 
 
-# 장애물 설치
-def makeWall(cnt):
-  global flag
-  if cnt == 3:
-    if bfs():
-      flag = True
-      return
-  else:
-    for i in range(n):
-      for j in range(n):
-        if graph[i][j] == 'X':
-          graph[i][j] = 'O'
-          makeWall(cnt + 1)
-          graph[i][j] = 'X'
+for c in list(combinations(blank, 3)):
+  for i in range(3):
+    cx, cy = c[i]
+    g[cx][cy] = 'O'
 
+  if check():
+    print("YES")
+    sys.exit()
+  for i in range(3):
+    cx, cy = c[i]
+    g[cx][cy] = 'X'
 
-makeWall(0)
-
-if flag:
-  print("YES")
 else:
   print("NO")
