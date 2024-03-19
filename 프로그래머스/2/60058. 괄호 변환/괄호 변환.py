@@ -1,5 +1,6 @@
 def check(s):
     stack = []
+    
     for x in s:
         if x == '(':
             stack.append(x)
@@ -10,37 +11,38 @@ def check(s):
                 return False
     if stack:
         return False
-    
     return True
 
 def solution(p):
     answer = ''
     
-    if p == '':
-        return p
+    if p == '': # base case
+        return ''
     
     left_cnt, right_cnt = 0, 0
+    
     for x in p:
         if x == '(':
             left_cnt += 1
         else:
             right_cnt += 1
     
-        if left_cnt == right_cnt: # 균형잡힌 문자열
-            u = p[:left_cnt + right_cnt]
-            v = p[left_cnt + right_cnt:]
+        if left_cnt == right_cnt:
+            u = p[:left_cnt+right_cnt]
+            v = p[left_cnt+right_cnt:]
             break
-            
-    if check(u):
+    
+        
+    if check(u): # 올바른 문자열인지 확인
         return u + solution(v)
     
-    
-    answer = "(" + solution(v) + ")"
+    answer = '(' + solution(v) + ')'
     u = u[1:-1]
     
-    for i in range(len(u)):
-        if u[i] == '(':
+    for x in u:
+        if x == '(':
             answer += ')'
         else:
             answer += '('
+            
     return answer
