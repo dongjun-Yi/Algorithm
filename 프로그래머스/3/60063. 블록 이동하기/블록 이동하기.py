@@ -11,44 +11,47 @@ def get_next_pos(pos, board):
     
     for i in range(4):
         pos1_next_x, pos1_next_y, pos2_next_x, pos2_next_y = pos1_x + dx[i], pos1_y + dy[i], pos2_x + dx[i], pos2_y + dy[i]
-        
         if board[pos1_next_x][pos1_next_y] == 0 and board[pos2_next_x][pos2_next_y] == 0:
             next_pos.append({(pos1_next_x, pos1_next_y), (pos2_next_x, pos2_next_y)})
-            
-    if pos1_x == pos2_x: # 가로로 놓여 있을 때
-        for i in [-1,1]:
+    
+    if pos1_x == pos2_x: # 가로 놓여있는 경우
+        for i in [-1, 1]:
             if board[pos1_x + i][pos1_y] == 0 and board[pos2_x + i][pos2_y] == 0:
                 next_pos.append({(pos1_x, pos1_y), (pos1_x + i, pos1_y)})
-                next_pos.append({(pos2_x, pos2_y), (pos2_x + i, pos2_y)})
+                next_pos.append({(pos2_x, pos2_y), (pos2_x +i, pos2_y)})
                 
-    if pos1_y == pos2_y:
-         for i in [-1,1]:
+    elif pos1_y == pos2_y: # 세로 놓여있는 경우
+        for i in [-1, 1]:
             if board[pos1_x][pos1_y + i] == 0 and board[pos2_x][pos2_y + i] == 0:
                 next_pos.append({(pos1_x, pos1_y), (pos1_x, pos1_y + i)})
                 next_pos.append({(pos2_x, pos2_y), (pos2_x, pos2_y + i)})
     return next_pos
-
+        
 def solution(board):
     n = len(board)
+    
     new_board = [[1] * (n+2) for _ in range(n+2)]
     
     for i in range(n):
         for j in range(n):
             new_board[i+1][j+1] = board[i][j]
-            
+    
     q = deque()
-    visited = [] # 방문처리
+    visited = []
+    
     pos = {(1,1), (1,2)}
-    q.append((pos, 0)) # q = (pos, time)
+    q.append((pos, 0)) # 위치, 비용
     visited.append(pos)
     
     while q:
-        pos, time = q.popleft()
+        pos, cost = q.popleft()
         
-        if (n,n) in pos:
-            return time
+        if (n, n) in pos:
+            return cost
+        
         for next_pos in get_next_pos(pos, new_board):
             if next_pos not in visited:
-                q.append((next_pos, time + 1))
                 visited.append(next_pos)
+                q.append((next_pos, cost + 1))
+                
     return 0
