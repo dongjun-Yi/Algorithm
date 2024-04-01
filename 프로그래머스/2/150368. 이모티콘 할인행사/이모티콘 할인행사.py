@@ -1,42 +1,44 @@
+from itertools import permutations
+
 def solution(users, emoticons):
     answer = [0, 0]
-    
-    ratio_data = [10, 20, 30, 40]
+    discount_ratio = [10, 20, 30, 40]
     discount = []
     
     def dfs(L, arr):
-        if L == len(arr):
+        if L == len(emoticons):
             discount.append(arr[:])
-            return
         else:
-            for d in ratio_data:
-                arr[L] += d
+            for d in discount_ratio:
+                arr[L] = d
                 dfs(L+1, arr)
-                arr[L] -= d
+                arr[L] = d
     
     dfs(0, [0] * len(emoticons))
 
+    # discount = list(permutations(discount_ratio, len(emoticons))) => 순열로는 중복순열의 형태로 경우의수를 못구하기 때문에 dfs로 할인율 경우의수 계산
+
+    
     for d in range(len(discount)):
-        plus_user = 0
+        plus_service = 0
         total = 0
         
         for user in users:
+            emoticon_pay = 0
             ratio, limit_price = user
-            emoticon_buy = 0 
             
             for i in range(len(emoticons)):
                 if ratio <= discount[d][i]:
-                    emoticon_buy += emoticons[i] * ((100 - discount[d][i]) / 100)
+                    emoticon_pay += emoticons[i] - (emoticons[i] * discount[d][i] * 0.01)
             
-            if limit_price <= emoticon_buy:
-                plus_user += 1
+            if limit_price <= emoticon_pay:
+                plus_service += 1
             else:
-                total += emoticon_buy
-        
-        if answer[0] < plus_user:
-            answer = [plus_user, total]
-        elif answer[0] == plus_user:
+                total += emoticon_pay
+            
+        if answer[0] < plus_service:
+            answer = [plus_service, total]
+        elif answer[0] == plus_service:
             if answer[1] < total:
-                answer = [plus_user, total]
-                
+                answer = [plus_service, total]
     return answer
