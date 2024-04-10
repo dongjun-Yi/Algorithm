@@ -2,31 +2,29 @@ import java.util.*;
 
 class Solution {
     public int solution(String s) {
-        int n = s.length();
-        int answer = n;
-        int count = 1;
+        int answer = s.length();
         
-        for (int i = 1; i <= n / 2; i++){
-            StringBuffer result = new StringBuffer();
+        for(int i = 1; i <= s.length(); i++) {
             String target = s.substring(0, i);
+            String result = "";
+            int count = 1;
             
-            for (int j = i; j <= n; j= j + i){ // 3abcdede
-                
-                int endIndex = Math.min(j + i, n);
+            for (int j = i; j <= s.length(); j= j + i) {
+                int endIndex = Math.min(j+i, s.length());
                 String temp = s.substring(j, endIndex);
                 
-                if (target.equals(temp))
+                if (target.equals(temp)){
                     count++;
-                else {
+                } else{
                     if (count > 1){
-                        result.append(count);
+                        result += String.valueOf(count);
                     }
-                    result.append(target);
-                    count = 1;
+                    result += target;
                     target = temp;
+                    count = 1;
                 }
             }
-            result.append(target);
+            result += target;
             answer = Math.min(answer, result.length());
         }
         return answer;
