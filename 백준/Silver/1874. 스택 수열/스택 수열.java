@@ -1,36 +1,36 @@
 import java.util.*;
 
 public class Main {
+
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
     int n = sc.nextInt();
 
-    int[] arr = new int[n];
-
+    int[] A = new int[n];
     for (int i = 0; i < n; i++) {
-      arr[i] = sc.nextInt();
+      A[i] = sc.nextInt();
     }
 
-    int num = 1;
+    int num = 1; // 스택에 넣을 숫자.
     Stack<Integer> stack = new Stack<Integer>();
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
 
     for (int i = 0; i < n; i++) {
-      int target = arr[i];
+      int target = A[i];
 
-      if (target >= num) {
-        while (target >= num) {
-          stack.push(num++);
-          sb.append("+\n");
-        }
-        stack.pop();
-        sb.append("-\n");
-      } else {
-        int last = stack.pop();
-        if (target < last) {
+      if (target < num) {
+        int pop = stack.pop();
+        if (target < pop) {
           System.out.println("NO");
           System.exit(0);
         }
+        sb.append("-\n");
+      } else {
+        while (target >= num) {
+          stack.add(num++);
+          sb.append("+\n");
+        }
+        stack.pop();
         sb.append("-\n");
       }
     }
