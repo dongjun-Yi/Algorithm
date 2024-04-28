@@ -1,43 +1,48 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    int n = Integer.parseInt(br.readLine());
 
-  public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);
-    int n = sc.nextInt();
+    long[] A = new long[n];
 
-    int[] a = new int[n];
+    StringTokenizer st = new StringTokenizer(br.readLine());
 
     for (int i = 0; i < n; i++) {
-      a[i] = sc.nextInt();
+      A[i] = Long.parseLong(st.nextToken());
     }
 
-    Arrays.sort(a);
-
+    Arrays.sort(A);
     int result = 0;
 
     for (int i = 0; i < n; i++) {
-      int target = a[i];
+      long target = A[i];
+
       int lt = 0;
       int rt = n - 1;
 
       while (lt < rt) {
-        if ((a[lt] + a[rt]) == target) {
+        if ((A[lt] + A[rt]) == target) {
           if (lt != i && rt != i) {
             result++;
             break;
           }
-          if (lt == i)
+
+          if (lt == i) {
             lt++;
-          if (rt == i)
+          } else {
             rt--;
-        } else if ((a[lt] + a[rt]) < target) {
-          lt++;
-        } else {
+          }
+        } else if ((A[lt] + A[rt]) > target) {
           rt--;
+        } else {
+          lt++;
         }
       }
     }
+
     System.out.println(result);
   }
 }
