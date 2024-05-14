@@ -4,67 +4,65 @@ public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
     int n = sc.nextInt();
-    Tree[] A = new Tree[n];
-    sc.nextLine();
+    Tree[] tree = new Tree[n]; // 트리들의 자식 정보들을 관리할 배열
     for (int i = 0; i < n; i++) {
-      String value = sc.nextLine();
-      char parentValue = value.charAt(0);
-      char leftValue = value.charAt(2);
-      char rightValue = value.charAt(4);
+      char root = sc.next().charAt(0);
+      char left = sc.next().charAt(0);
+      char right = sc.next().charAt(0);
 
-      if (A[parentValue - 'A'] == null)
-        A[parentValue - 'A'] = new Tree(parentValue);
-
-      if (leftValue != '.') {
-        A[leftValue - 'A'] = new Tree(leftValue);
-        A[parentValue - 'A'].leftTree = A[leftValue - 'A'];
+      if (tree[root - 'A'] == null) {
+        tree[root - 'A'] = new Tree(root);
       }
-      if (rightValue != '.') {
-        A[rightValue - 'A'] = new Tree(rightValue);
-        A[parentValue - 'A'].rightTree = A[rightValue - 'A'];
+
+      if (left != '.') {
+        tree[left - 'A'] = new Tree(left);
+        tree[root - 'A'].left = tree[left - 'A'];
+      }
+      if (right != '.') {
+        tree[right - 'A'] = new Tree(right);
+        tree[root - 'A'].right = tree[right - 'A'];
       }
     }
 
-    preOrder(A[0]);
+    preOrder(tree[0]);
     System.out.println();
-    inOrder(A[0]);
+    inOrder(tree[0]);
     System.out.println();
-    postOrder(A[0]);
-    System.out.println();
+    postOrder(tree[0]);
+
   }
 
   static void preOrder(Tree tree) {
     if (tree == null)
       return;
-    System.out.print(tree.data);
-    preOrder(tree.leftTree);
-    preOrder(tree.rightTree);
+    System.out.print(tree.root);
+    preOrder(tree.left);
+    preOrder(tree.right);
   }
 
   static void inOrder(Tree tree) {
     if (tree == null)
       return;
-    inOrder(tree.leftTree);
-    System.out.print(tree.data);
-    inOrder(tree.rightTree);
+    inOrder(tree.left);
+    System.out.print(tree.root);
+    inOrder(tree.right);
   }
 
   static void postOrder(Tree tree) {
     if (tree == null)
       return;
-
-    postOrder(tree.leftTree);
-    postOrder(tree.rightTree);
-    System.out.print(tree.data);
+    postOrder(tree.left);
+    postOrder(tree.right);
+    System.out.print(tree.root);
   }
 }
 
 class Tree {
-  char data;
-  Tree leftTree;
-  Tree rightTree;
+  char root;
+  Tree left;
+  Tree right;
 
-  public Tree(char data) {
-    this.data = data;
+  public Tree(char root) {
+    this.root = root;
   }
 }
