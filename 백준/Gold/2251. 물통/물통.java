@@ -1,82 +1,53 @@
 import java.util.*;
 
 public class Main {
-  static int[] sender = { 0, 0, 1, 1, 2, 2 };
-  static int[] receiver = { 1, 2, 0, 2, 0, 1 };
+  static int[] S = { 0, 0, 1, 1, 2, 2 };
+  static int[] R = { 1, 2, 0, 2, 0, 1 };
   static boolean[][] visited = new boolean[201][201];
+  static int[] capacity = new int[3];
   static boolean[] answer = new boolean[201];
-  static int[] now = new int[3]; // 현재 용량 담을 배열
 
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
+    capacity[0] = sc.nextInt();
+    capacity[1] = sc.nextInt();
+    capacity[2] = sc.nextInt();
 
-    now[0] = sc.nextInt();
-    now[1] = sc.nextInt();
-    now[2] = sc.nextInt();
+    answer[capacity[2]] = true;
 
-    bfs();
+    dfs(0, 0, capacity[2]);
 
-    for (int i = 0; i < 201; i++) {
+    for (int i = 0; i < answer.length; i++) {
       if (answer[i])
         System.out.print(i + " ");
     }
-
   }
 
-  static void bfs() {
-    Queue<Volume> q = new LinkedList();
-    q.add(new Volume(0, 0, now[2]));
-    visited[0][0] = true;
-    answer[now[2]] = true;
+  static void dfs(int A, int B, int C) {
 
-    while (!q.isEmpty()) {
-      Volume v = q.poll();
-      int A = v.getA();
-      int B = v.getB();
-      int C = v.getC();
+    if (visited[A][B])
+      return;
 
-      for (int i = 0; i < 6; i++) {
-        int[] next = { A, B, C };
-        next[receiver[i]] += next[sender[i]]; // 물을 옮김
-        next[sender[i]] = 0; // 다 옮긴 물통은 0으로 update
+    visited[A][B] = true;
 
-        if (next[receiver[i]] > now[receiver[i]]) { // 만약 합쳐진 물의 양이 수용량보다 클경우
-          next[sender[i]] = next[receiver[i]] - now[receiver[i]]; // 원래 보내진 넘쳐진 물량 - 물통 수용량
-          next[receiver[i]] = now[receiver[i]]; // 물통 최대값으로 update
+    for (int i = 0; i < 6; i++) {
+      int[] next = { A, B, C };
+
+      next[R[i]] += next[S[i]];
+      next[S[i]] = 0;
+
+      if (next[R[i]] > capacity[R[i]]) {
+        next[S[i]] = next[R[i]] - capacity[R[i]];
+        next[R[i]] = capacity[R[i]];
+      }
+
+      if (!visited[next[0]][next[1]]) {
+        if (next[0] == 0) {
+          answer[next[2]] = true;
         }
-
-        if (!visited[next[0]][next[1]]) {
-          visited[next[0]][next[1]] = true;
-          q.add(new Volume(next[0], next[1], next[2]));
-          if (next[0] == 0) {// A의 물이 0이면 정답 기록
-            answer[next[2]] = true;
-          }
-        }
+        dfs(next[0], next[1], next[2]);
       }
     }
-  }
-}
 
-class Volume {
-  int a;
-  int b;
-  int c;
-
-  public Volume(int a, int b, int c) {
-    this.a = a;
-    this.b = b;
-    this.c = c;
-  }
-
-  public int getA() {
-    return this.a;
-  }
-
-  public int getB() {
-    return this.b;
-  }
-
-  public int getC() {
-    return this.c;
   }
 }
