@@ -1,51 +1,53 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-  static ArrayList<ArrayList<Integer>> g;
+  static ArrayList<Integer>[] g;
   static boolean[] visited;
+  static boolean friend;
 
-  public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);
-    int n = sc.nextInt();
-    int m = sc.nextInt();
-
-    g = new ArrayList();
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    int n = Integer.parseInt(st.nextToken());
+    int m = Integer.parseInt(st.nextToken());
+    g = new ArrayList[n];
 
     for (int i = 0; i < n; i++) {
-      g.add(new ArrayList());
+      g[i] = new ArrayList();
     }
 
     for (int i = 0; i < m; i++) {
-      int a = sc.nextInt();
-      int b = sc.nextInt();
-
-      g.get(a).add(b);
-      g.get(b).add(a);
+      st = new StringTokenizer(br.readLine());
+      int a = Integer.parseInt(st.nextToken());
+      int b = Integer.parseInt(st.nextToken());
+      g[a].add(b);
+      g[b].add(a);
     }
 
     for (int i = 0; i < n; i++) {
       visited = new boolean[n];
-      dfs(0, i);
+      dfs(1, i);
+      if (friend) {
+        System.out.println(1);
+        System.exit(0);
+      }
     }
     System.out.println(0);
   }
 
   static void dfs(int level, int v) {
-    if (level == 4) {
-      System.out.println(1);
-      System.exit(0);
-    }
-
-    if (visited[v])
+    if (level == 5 || friend) {
+      friend = true;
       return;
-
+    }
     visited[v] = true;
 
-    for (int cur : g.get(v)) {
-      if (!visited[cur]) {
+    for (int cur : g[v]) {
+      if (!visited[cur])
         dfs(level + 1, cur);
-      }
     }
+
     visited[v] = false;
   }
 }
