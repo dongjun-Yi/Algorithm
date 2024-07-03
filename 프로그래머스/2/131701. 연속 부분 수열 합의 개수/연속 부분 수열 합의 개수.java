@@ -2,18 +2,20 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] elements) {
-        Set<Integer> answer = new HashSet();
-        int[] LQ = new int[elements.length + elements.length];
+        Set<Integer> answer = new HashSet<Integer>();
+        int length = elements.length;
+        int[] lq = new int[length + length];
         
-        for(int i = 0; i < LQ.length; i++){
-            LQ[i] = elements[i % elements.length];
+        
+        for(int i = 0; i < lq.length; i++){
+            lq[i] = elements[i % length];
         }
-        
-        for(int i = 1; i <= elements.length; i++){
-            for(int j = 0; j < elements.length; j++){
+
+        for(int i = 1; i <= length; i++){
+            for (int j = 0; j < length; j++){
                 int sum = 0;
                 for(int k = 0; k < i; k++){
-                    sum += LQ[k + j];
+                    sum += lq[k + j];
                 }
                 answer.add(sum);
             }
