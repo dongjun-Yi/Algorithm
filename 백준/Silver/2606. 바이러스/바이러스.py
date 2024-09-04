@@ -1,25 +1,27 @@
 n = int(input())
-graph = [[] for _ in range(n + 1)]
-
-computer = int(input())
-
-for i in range(computer):
-  a, b = map(int, input().split())
-  graph[a].append(b)
-  graph[b].append(a)
-
-res = 0
+m = int(input())
+g = [[] * (n + 1) for _ in range(n + 1)]
 visited = [False] * (n + 1)
 
+for _ in range(m):
+  a, b = map(int, input().split())
+  g[a].append(b)
+  g[b].append(a)
 
-def dfs(graph, v, visited):
-  global res
-  visited[v] = True
-  res += 1
-  for x in graph[v]:
-    if not visited[x]:
-      dfs(graph, x, visited)
+result = 0
 
 
-dfs(graph, 1, visited)
-print(res - 1)
+def dfs(v):
+  global result
+  for x in g[v]:
+    if visited[x]:
+      continue
+    visited[x] = True
+    result += 1
+    dfs(x)
+
+
+visited[1] = True
+dfs(1)
+
+print(result)
