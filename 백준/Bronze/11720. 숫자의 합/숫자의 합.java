@@ -1,17 +1,18 @@
 import java.util.*;
 
-public class Main {
-  public static void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
-    int n = scanner.nextInt();
-
-    String str = scanner.next();
-    char[] arr = str.toCharArray();
-    int sum = 0;
-    for (int i = 0; i < n; i++) {
-      sum += arr[i] - 48;
+class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        
+        String s = sc.next();
+        char[] chars = s.toCharArray();
+        int sum = 0;
+        
+        for(int i = 0; i< n; i++){
+            sum += chars[i] - 48;
+        }
+        
+        System.out.println(sum);
     }
-    System.out.println(sum);
-    scanner.close();
-  }
 }
